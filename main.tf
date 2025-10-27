@@ -18,8 +18,6 @@ resource "aws_subnet" "public_subnet_a" {
     Name = "Terraform Public Subnet a"
   }
 }
-
-
  
 resource "aws_subnet" "public_subnet_b" {
   vpc_id = aws_vpc.main_vpc.id
