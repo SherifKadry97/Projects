@@ -37,7 +37,7 @@ This Terraform configuration sets up a complete **two-tier web application infra
  
 ---
 
-📁 Project Structure
+## 📁 Project Structure
 terraform-aws-vpc-asg/
 ├── main.tf                 # Main infrastructure configuration
 ├── variables.tf            # Variable definitions
