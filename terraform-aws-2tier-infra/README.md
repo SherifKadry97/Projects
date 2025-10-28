@@ -31,4 +31,5 @@ terraform-aws-vpc-asg/
 └── README.md              # This file
 
 
+![Architecture Diagram](./terraform-aws-2tier-diagram.png)
 
