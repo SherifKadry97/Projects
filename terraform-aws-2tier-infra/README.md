@@ -43,8 +43,6 @@ terraform-aws-2tier-infra/
 ├── main.tf # Main infrastructure configuration
 ├── variables.tf # Variable definitions
 ├── outputs.tf # Output values
-├── terraform.tfvars # Variable values (create your own copy)
-├── terraform.tfvars.example # Example variables file
 └── README.md # Project documentation
 
 ```
