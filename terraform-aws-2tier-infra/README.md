@@ -39,7 +39,7 @@ This Terraform configuration sets up a complete **two-tier web application infra
 
 ## 📁 Project Structure
 ```bash
-terraform-aws-vpc-asg/
+terraform-aws-2tier-infra/
 ├── main.tf # Main infrastructure configuration
 ├── variables.tf # Variable definitions
 ├── outputs.tf # Output values
