@@ -54,13 +54,18 @@ terraform-aws-vpc-asg/
 ## 🚀 Deployment Instructions
 
 1. **Initialize Terraform**
+   ```bash
    terraform init
-
-2. **Validate Configuration**
+   ```
+3. **Validate Configuration**
+   ```bash
    terraform validate
-
-3. **Preview Changes**
+   ```
+5. **Preview Changes**
+   ```bash
    terraform plan
-
-4. **Deploy Infrastructure**
+   ```
+7. **Deploy Infrastructure**
+   ```bash
    terraform apply
+   ```
