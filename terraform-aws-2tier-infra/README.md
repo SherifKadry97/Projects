@@ -1,4 +1,4 @@
-# 🌩️ AWS Highly Available and Scalable Web Infrastructure with Terraform
+# 🌩️ AWS Highly Available and Scalable 2-tier Web Infrastructure with Terraform
 A **Terraform project** that deploys a **highly available and scalable web application infrastructure on AWS** with best practices for security, scalability, and high availability. It’s designed to demonstrate real-world **DevOps and Cloud Infrastructure automation** — including **networking, compute scaling, and load balancing** — built from scratch as infrastructure-as-code.
 
 ---
