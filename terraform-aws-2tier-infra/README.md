@@ -47,6 +47,8 @@ terraform-aws-vpc-asg/
 ├── terraform.tfvars.example # Example variables file
 └── README.md # Project documentation
 
+```
+
 ---
 
 ## 🚀 Deployment Instructions
