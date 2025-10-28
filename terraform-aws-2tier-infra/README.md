@@ -5,7 +5,7 @@ A **Terraform project** that deploys a **highly available and scalable web appli
 
 ## 🏗️ Architecture Diagram
 
-![AWS Architecture Diagram](./docs/architecture-diagram.png)
+![AWS Architecture Diagram](./terraform-aws-2tier-diagram.png)
 
 > *The architecture includes multi-AZ, public/private subnets, Application load balancer, NAT GW, and ASG EC2 instances.*
 
