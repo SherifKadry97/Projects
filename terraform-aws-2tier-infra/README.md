@@ -51,7 +51,13 @@ terraform-aws-2tier-infra/
 
 ## 🚀 Deployment Instructions
 
-1. **Initialize Terraform**
+1. **Export AWS Secret and Access keys**
+   ```bash
+   export AWS_ACCESS_KEY_ID="your-access-key"
+   export AWS_SECRET_ACCESS_KEY="your-secret-key"
+   ```
+
+2. **Initialize Terraform**
    ```bash
    terraform init
    ```
@@ -59,11 +65,11 @@ terraform-aws-2tier-infra/
    ```bash
    terraform validate
    ```
-5. **Preview Changes**
+4. **Preview Changes**
    ```bash
    terraform plan
    ```
-7. **Deploy Infrastructure**
+5. **Deploy Infrastructure**
    ```bash
    terraform apply
    ```
