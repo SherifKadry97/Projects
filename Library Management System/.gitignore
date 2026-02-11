@@ -1,0 +1,43 @@
+# Python
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+*.pyc
+.Python
+
+# Virtual environments
+venv/
+SC_DbApp/venv/
+.venv/
+
+# IDE/editor
+.vscode/
+.idea/
+*.code-workspace
+
+# OS files
+Thumbs.db
+Desktop.ini
+
+# Flask/SQLAlchemy
+instance/
+*.sqlite3
+
+# Alembic cache
+alembic.ini
+SC_DbApp/migrations/versions/__pycache__/
+
+# Logs
+*.log
+
+# Env/config
+.env
+.env.*
+*.local
+
+# Terraform
+infra/terraform/.terraform/
+infra/terraform/terraform.tfstate*
+infra/terraform/*.tfvars
+

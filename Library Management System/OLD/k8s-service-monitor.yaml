@@ -1,0 +1,26 @@
+---
+# ServiceMonitor for Prometheus Operator
+# This tells Prometheus to scrape metrics from the Shelf Check application
+apiVersion: monitoring.coreos.com/v1
+kind: ServiceMonitor
+metadata:
+  name: shelf-check-monitor
+  namespace: cls
+  labels:
+    app: shelf-check
+    release: prometheus  # Adjust based on your Prometheus Operator installation
+spec:
+  selector:
+    matchLabels:
+      app: shelf-check
+      component: web
+  endpoints:
+  - port: metrics
+    path: /metrics
+    interval: 30s
+    scrapeTimeout: 10s
+  namespaceSelector:
+    matchNames:
+    - cls
+
+

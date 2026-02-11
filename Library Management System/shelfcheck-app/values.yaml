@@ -1,0 +1,52 @@
+# Global settings
+global:
+  # The shared password for DB Admin and App connection
+  saPassword: "YourStrong!Passw0rd"
+
+# MSSQL Database Configuration
+db:
+  name: mssql-db
+  image:
+    repository: mcr.microsoft.com/mssql/server
+    tag: "2022-latest"
+    pullPolicy: IfNotPresent
+  service:
+    port: 1433
+  storage:
+    size: 1Gi
+    # className: fast-ssd # Uncomment if needed
+  resources:
+    requests:
+      memory: "1Gi"
+      cpu: "500m"
+    limits:
+      memory: "2Gi"
+      cpu: "1000m"
+
+# Flask Application Configuration
+app:
+  name: shelf-check-app
+  replicaCount: 2
+  image:
+    repository: omarbaddour1/shelf-check-app
+    tag: "latest"
+    pullPolicy: IfNotPresent # Change to 'Always' for production
+  service:
+    type: ClusterIP
+    port: 80
+    targetPort: 5000
+  resources:
+    requests:
+      memory: "512Mi"
+      cpu: "250m"
+    limits:
+      memory: "1Gi"
+      cpu: "500m"
+  config:
+    dbName: "ShelfCheckDB"
+    secretKey: "dev-secret-key-change-in-production"
+
+# Monitoring Configuration
+monitoring:
+  enabled: true
+  releaseLabel: prometheus # Matches the Prometheus Operator release label

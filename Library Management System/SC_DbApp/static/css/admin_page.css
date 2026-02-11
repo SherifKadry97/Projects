@@ -1,0 +1,184 @@
+/* === Global Reset === */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: 'Inter', Arial, sans-serif;
+}
+
+/* === Page Body === */
+body {
+  background: linear-gradient(135deg, #e0e7ff, #f8fafc);
+  padding: 20px;
+  color: #111827;
+  animation: fadeIn 0.6s ease;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* === Top Bar === */
+.topbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: #0b2149;
+  color: white;
+  padding: 15px 25px;
+  border-radius: 12px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+}
+
+.topbar h1 {
+  font-size: 22px;
+  font-weight: 700;
+}
+
+/* === Logout Button === */
+.logout-btn {
+  background-color: white;
+  color: #0b2149;
+  border: none;
+  padding: 9px 15px;
+  border-radius: 8px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.logout-btn:hover {
+  background-color: #f1f5f9;
+  transform: scale(1.03);
+}
+
+/* === Search and Add Section === */
+.actions {
+  background: rgba(255, 255, 255, 0.75);
+  backdrop-filter: blur(10px);
+  margin-top: 25px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 18px 22px;
+  border-radius: 12px;
+  box-shadow: 0 3px 10px rgba(0, 0, 0, 0.06);
+  transition: box-shadow 0.3s ease;
+}
+
+.actions:hover {
+  box-shadow: 0 5px 14px rgba(0, 0, 0, 0.1);
+}
+
+.search-box {
+  flex: 1;
+  margin-right: 15px;
+}
+
+.search-box input {
+  width: 100%;
+  padding: 10px 14px;
+  border: 1px solid #d1d5db;
+  border-radius: 8px;
+  outline: none;
+  height: 42px;
+  font-size: 15px;
+  transition: border 0.2s ease;
+}
+
+.search-box input:focus {
+  border-color: #0b2149;
+}
+
+/* === Add Book Button === */
+.add-btn {
+  background: linear-gradient(90deg, #007bff, #005dd1);
+  color: white;
+  border: none;
+  padding: 11px 18px;
+  border-radius: 10px;
+  font-weight: 600;
+  cursor: pointer;
+  box-shadow: 0 2px 5px rgba(0, 123, 255, 0.3);
+  transition: all 0.3s ease;
+}
+
+.add-btn:hover {
+  background: linear-gradient(90deg, #0066d1, #004cb3);
+  transform: translateY(-1px);
+  box-shadow: 0 4px 8px rgba(0, 123, 255, 0.35);
+}
+
+/* === Categories Grid === */
+.categories {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  gap: 20px;
+  margin-top: 30px;
+}
+
+/* === Individual Category Card === */
+.category-card {
+  background: rgba(255, 255, 255, 0.8);
+  backdrop-filter: blur(12px);
+  border-radius: 14px;
+  padding: 25px;
+  text-align: center;
+  box-shadow: 0 3px 10px rgba(0, 0, 0, 0.08);
+  transition: transform 0.25s ease, box-shadow 0.25s ease;
+  cursor: pointer;
+  border: 1px solid rgba(255, 255, 255, 0.3);
+}
+
+.category-card:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.12);
+}
+
+/* === Category Titles and Counts === */
+.category-card h3 {
+  font-size: 18px;
+  color: #0b2149;
+  margin-bottom: 6px;
+  font-weight: 700;
+}
+
+.category-card p {
+  color: #374151;
+  font-size: 14px;
+  font-weight: 500;
+}
+
+.borrow-btn {
+  background: linear-gradient(90deg, #10b981, #059669);
+  color: white;
+  border: none;
+  padding: 8px 14px;
+  border-radius: 8px;
+  font-weight: 600;
+  cursor: pointer;
+  margin-top: 6px;
+  transition: all 0.3s ease;
+}
+
+.borrow-btn:hover {
+  background: linear-gradient(90deg, #059669, #047857);
+  transform: translateY(-1px);
+}
+
+.unavailable {
+  display: inline-block;
+  background-color: #e5e7eb;
+  color: #6b7280;
+  padding: 8px 14px;
+  border-radius: 8px;
+  font-weight: 600;
+  margin-top: 6px;
+}
+
+/* small responsive tweaks for cards and forms */
+@media (max-width: 800px) {
+  .categories { grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); }
+  .form-container { padding: 18px; margin: 20px; }
+}

@@ -1,0 +1,78 @@
+body, html {
+    height: 100%;
+    margin: 0;
+    font-family: Arial, sans-serif;
+    color: white;
+}
+
+.home-container {
+    /* Background image from Unsplash */
+    background-image: url('https://images.unsplash.com/photo-1507842217343-583bb7270b66');
+    
+    /* Image properties */
+    height: 100%;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+    
+    /* Center the content */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+}
+
+/* Adds a dark, semi-transparent overlay box for readability */
+.content-box {
+    background-color: rgba(0, 0, 0, 0.6);
+    padding: 40px;
+    border-radius: 10px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5);
+}
+
+.content-box h1 {
+    font-size: 2.5rem;
+    margin-bottom: 10px;
+}
+
+.content-box p {
+    font-size: 1.2rem;
+    margin-bottom: 30px;
+}
+
+.button-container {
+    display: flex;
+    gap: 20px; /* Space between buttons */
+}
+
+.login-button {
+    display: inline-block;
+    padding: 15px 30px;
+    font-size: 1.1rem;
+    font-weight: bold;
+    color: white;
+    text-decoration: none;
+    border-radius: 5px;
+    border: 2px solid white;
+    background-color: transparent;
+    cursor: pointer;
+    transition: background-color 0.3s, color 0.3s;
+}
+
+/* User button hover effect */
+.login-button:hover {
+    background-color: white;
+    color: #333;
+}
+
+/* Admin button specific style */
+.login-button.admin {
+    background-color: #340877; /* A distinct red color */
+    border-color: #020757;
+}
+
+.login-button.admin:hover {
+    background-color: #e74c3c;
+    border-color: #e74c3c;
+    color: white;
+}

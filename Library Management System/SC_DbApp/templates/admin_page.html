@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Shelf Check - Library Inventory</title>
+  <link rel="stylesheet" type="text/css" href="/static/css/admin_page.css" />
+  <style>
+    /* Make categories full-width like search bar */
+    .categories {
+      margin-top: 30px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 25px;
+    }
+
+    .category-card {
+      width: 100%;
+      max-width: 850px;
+      background: rgba(255, 255, 255, 0.9);
+      backdrop-filter: blur(10px);
+      border-radius: 14px;
+      padding: 22px 26px;
+      box-shadow: 0 3px 10px rgba(0, 0, 0, 0.08);
+      transition: transform 0.25s ease, box-shadow 0.25s ease;
+    }
+
+    .category-card:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 6px 14px rgba(0, 0, 0, 0.12);
+    }
+
+    .category-card h3 {
+      color: #0b2149;
+      font-weight: 700;
+      font-size: 1.2rem;
+      margin-bottom: 12px;
+      text-align: left;
+    }
+
+    .category-card ul {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+    }
+
+    .category-card li {
+      background: #f9fafb;
+      border-radius: 10px;
+      padding: 12px 16px;
+      margin-bottom: 8px;
+      box-shadow: 0 1px 4px rgba(0, 0, 0, 0.04);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      transition: background 0.2s ease;
+      flex-wrap: wrap;
+    }
+
+    .category-card li:hover {
+      background: #f1f5f9;
+    }
+
+    .copy-count {
+      display: inline-block;
+      background: #eef2ff;
+      color: #0b2149;
+      font-weight: 600;
+      font-size: 13.5px;
+      padding: 4px 10px;
+      border-radius: 6px;
+      margin-left: 10px;
+    }
+
+    /* Buttons */
+    .action-btn {
+      display: inline-block;
+      border: none;
+      border-radius: 8px;
+      font-weight: 600;
+      padding: 7px 14px;
+      text-decoration: none;
+      transition: all 0.25s ease;
+      cursor: pointer;
+      font-size: 14px;
+    }
+
+    .edit-btn {
+      background: linear-gradient(90deg, #3b82f6, #2563eb);
+      color: white;
+      margin-left: 8px;
+    }
+    .edit-btn:hover {
+      background: linear-gradient(90deg, #2563eb, #1d4ed8);
+      transform: translateY(-1px);
+    }
+
+    .remove-btn {
+      background: linear-gradient(90deg, #ef4444, #dc2626);
+      color: white;
+      margin-left: 6px;
+    }
+    .remove-btn:hover {
+      background: linear-gradient(90deg, #dc2626, #b91c1c);
+      transform: translateY(-1px);
+    }
+
+    /* Buttons container */
+    .book-actions {
+      display: flex;
+      align-items: center;
+      flex-wrap: wrap;
+    }
+
+    .filter-bar {
+      display: flex;
+      justify-content: center;
+      margin-top: 10px;
+    }
+
+    .filter-form {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 10px 18px;
+      background: rgba(255,255,255,0.85);
+      border-radius: 999px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+      flex-wrap: wrap;
+    }
+
+    .filter-form label {
+      font-weight: 600;
+      color: #0b2149;
+    }
+
+    .filter-form select {
+      padding: 8px 12px;
+      border-radius: 999px;
+      border: 1px solid #d1d5db;
+      min-width: 180px;
+      background: #fff;
+    }
+
+    .reset-link {
+      text-decoration: none;
+      color: #2563eb;
+      font-weight: 600;
+    }
+
+    @media (max-width: 900px) {
+      .category-card {
+        width: 95%;
+      }
+      .category-card li {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+      .book-actions {
+        margin-top: 8px;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <!-- Header bar -->
+  <header class="topbar">
+    <h1>📖 Shelf Check - Library Inventory</h1>
+    <a href="{{ url_for('logout') }}" class="logout-btn">Logout</a>
+  </header>
+
+  <!-- Search and add book section -->
+  <section class="actions">
+    <div class="search-box">
+      <input type="text" id="adminSearch" placeholder="🔍 Search by book name or author name..." />
+    </div>
+    <a href="{{ url_for('add_book') }}" class="add-btn">+ Add New Book</a>
+  </section>
+
+  <section class="filter-bar">
+    <form method="GET" class="filter-form">
+      <label for="categoryFilter">Category</label>
+      <select id="categoryFilter" name="category" onchange="this.form.submit()">
+        <option value="">All Categories</option>
+        {% if category_options %}
+          {% for cat in category_options %}
+            <option value="{{ cat }}" {% if selected_category == cat %}selected{% endif %}>{{ cat }}</option>
+          {% endfor %}
+        {% endif %}
+      </select>
+      {% if selected_category %}
+        <a href="{{ url_for('admin_dashboard') }}" class="reset-link">Reset</a>
+      {% endif %}
+    </form>
+  </section>
+
+  <!-- Categories Section -->
+  <section class="categories" id="categoryList">
+    {% if category_to_books %}
+      {% for category, books_in_cat in category_to_books.items() %}
+        <div class="category-card">
+          <h3>{{ category }}</h3>
+          <ul>
+            {% for b in books_in_cat %}
+              <li>
+                <div>
+                  <strong>{{ b.title }}</strong> — <em>{{ b.author }}</em>
+                  {% if b.isbn %}<span>(ISBN: {{ b.isbn }})</span>{% endif %}
+                  <span class="copy-count">
+                    Available: {{ book_availability[b.book_id] if b.book_id in book_availability else 0 }}
+                  </span>
+                </div>
+                <div class="book-actions">
+                  <a href="{{ url_for('edit_book', book_id=b.book_id) }}" class="action-btn edit-btn">Edit</a>
+                  <form method="POST" action="{{ url_for('delete_book', book_id=b.book_id) }}" style="display:inline;" onsubmit="return confirm('Remove this book?');">
+                    <button type="submit" class="action-btn remove-btn">Remove</button>
+                  </form>
+                </div>
+              </li>
+            {% endfor %}
+          </ul>
+        </div>
+      {% endfor %}
+    {% else %}
+      <p style="text-align:center;">No books available.</p>
+    {% endif %}
+  </section>
+
+  <script>
+    document.getElementById("adminSearch").addEventListener("input", function () {
+      const term = this.value.toLowerCase();
+      document.querySelectorAll(".category-card li").forEach(li => {
+        const text = li.innerText.toLowerCase();
+        li.style.display = text.includes(term) ? "flex" : "none";
+      });
+    });
+  </script>
+
+</body>
+</html>

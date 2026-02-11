@@ -1,0 +1,51 @@
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: mssql-data-pvc
+  namespace: cls
+spec:
+  accessModes:
+    - ReadWriteOnce
+  storageClassName: gp2
+  resources:
+    requests:
+      storage: 1Gi
+
+---
+apiVersion: v1
+kind: Secret
+metadata:
+  name: mssql-secrets
+  namespace: cls
+type: Opaque
+stringData:
+  SA_PASSWORD: "YourStrong!Passw0rd"
+
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: mssql-db
+  namespace: cls
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: mssql-db
+  template:
+    metadata:
+      labels:
+        app: mssql-db
+    spec:
+      tolerations:
+      - key: "CriticalAddonsOnly"
+        operator: "Exists"
+        effect: "NoSchedule"
+      - key: "karpenter.sh/disrupted"
+        operator: "Exists"
+        effect: "NoSchedule"
+
+      containers:
+      - name: mssql
+        image: mcr.microsoft.com/mssql/server:2022-latest
