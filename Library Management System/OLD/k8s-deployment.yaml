@@ -1,0 +1,71 @@
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: shelf-check-config
+  namespace: cls
+data:
+  PORT: "5000"
+  SECRET_KEY: "dev-secret"
+
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: shelf-check-app
+  namespace: cls
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: shelf-check
+  template:
+    metadata:
+      labels:
+        app: shelf-check
+    spec:
+      tolerations:
+      - key: "CriticalAddonsOnly"
+        operator: "Exists"
+        effect: "NoSchedule"
+      - key: "karpenter.sh/disrupted"
+        operator: "Exists"
+        effect: "NoSchedule"
+
+      containers:
+      - name: flask-app
+        image: omarbaddour1/shelf-check-app:latest
+        ports:
+        - containerPort: 5000
+        env:
+        - name: PORT
+          valueFrom:
+            configMapKeyRef:
+              name: shelf-check-config
+              key: PORT
+        - name: SECRET_KEY
+          valueFrom:
+            configMapKeyRef:
+              name: shelf-check-config
+              key: SECRET_KEY
+        resources:
+          requests:
+            cpu: "50m"
+            memory: "128Mi"
+          limits:
+            cpu: "100m"
+            memory: "256Mi"
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: shelf-check-service
+  namespace: cls
+spec:
+  type: LoadBalancer
+  selector:
+    app: shelf-check
+  ports:
+  - port: 80
+    targetPort: 5000

@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>My Books - Shelf Check</title>
+  <link rel="stylesheet" type="text/css" href="/static/css/admin_page.css" />
+  <style>
+    /* --- Layout --- */
+    body {
+      font-family: system-ui, sans-serif;
+      background: #f9fafb;
+      margin: 0;
+      padding: 0;
+    }
+    .topbar {
+      background: #0b2149;
+      color: white;
+      padding: 16px 24px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .topbar h1 {
+      margin: 0;
+      font-size: 1.5rem;
+    }
+
+    /* --- Dropdown menu --- */
+    .menu-container {
+      position: relative;
+      display: inline-block;
+    }
+    .menu-btn {
+      background: none;
+      border: none;
+      font-size: 24px;
+      color: white;
+      cursor: pointer;
+    }
+    .dropdown-menu {
+      display: none;
+      position: absolute;
+      right: 0;
+      top: 40px;
+      background: white;
+      border: 1px solid #ddd;
+      border-radius: 8px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+      padding: 8px 0;
+      min-width: 160px;
+      z-index: 50;
+    }
+    .dropdown-menu a {
+      display: block;
+      padding: 10px 16px;
+      text-decoration: none;
+      color: #111827;
+    }
+    .dropdown-menu a:hover {
+      background: #f3f4f6;
+    }
+
+    /* --- Table --- */
+    table {
+      width: 95%;
+      margin: 20px auto;
+      border-collapse: collapse;
+      background: white;
+      border-radius: 10px;
+      overflow: hidden;
+      box-shadow: 0 1px 4px rgba(0,0,0,0.1);
+    }
+    th, td {
+      padding: 12px 10px;
+      border-bottom: 1px solid #eee;
+      text-align: center;
+    }
+    th {
+      background-color: #0b2149;
+      color: white;
+      text-transform: uppercase;
+      font-size: 0.9rem;
+      letter-spacing: 0.5px;
+    }
+    tr:hover {
+      background-color: #f9fafb;
+    }
+
+    /* --- Return Button --- */
+    .return-btn {
+      background: #0b2149;
+      color: white;
+      border: none;
+      padding: 6px 14px;
+      border-radius: 6px;
+      cursor: pointer;
+      font-weight: 600;
+      transition: background 0.2s;
+    }
+    .return-btn:hover {
+      background: #1a3a7a;
+    }
+
+    /* --- Overdue styling --- */
+    .overdue {
+      color: red;
+      font-weight: bold;
+    }
+
+    /* --- Empty message --- */
+    .no-books {
+      text-align: center;
+      color: #555;
+      margin-top: 40px;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Header -->
+  <header class="topbar">
+    <h1>📚 My Borrowed Books</h1>
+    <div class="menu-container">
+      <button class="menu-btn" onclick="toggleMenu()">⋯</button>
+      <div class="dropdown-menu" id="userMenu">
+        <a href="{{ url_for('user_dashboard') }}">Back to Dashboard</a>
+        <a href="{{ url_for('logout') }}">Logout</a>
+      </div>
+    </div>
+  </header>
+
+  <!-- Flash messages -->
+  {% with messages = get_flashed_messages(with_categories=true) %}
+    {% if messages %}
+      <div class="flash-messages" style="text-align:center; margin-top:10px;">
+        {% for category, message in messages %}
+          <p class="flash-{{ category }}">{{ message }}</p>
+        {% endfor %}
+      </div>
+    {% endif %}
+  {% endwith %}
+
+  <!-- Borrowed Books Table -->
+  <section class="content">
+    {% if borrows %}
+      <table>
+        <thead>
+          <tr>
+            <th>Book Title</th>
+            <th>Borrow Date</th>
+            <th>Due Date</th>
+            <th>Status / Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for b in borrows %}
+            <tr>
+              <td>{{ b.book_copy.book.title }}</td>
+              <td>{{ b.borrow_date.strftime("%Y-%m-%d") }}</td>
+              <td>
+                {% if b.due_date < now %}
+                    <span class="overdue">{{ b.due_date.strftime("%Y-%m-%d") }} (Overdue)</span>
+                {% else %}
+                    {{ b.due_date.strftime("%Y-%m-%d") }}
+                {% endif %}
+                </td>
+              <td>
+                <form method="POST" action="{{ url_for('return_book', borrow_id=b.borrow_id) }}" style="display:inline;">
+                  <button type="submit" class="return-btn">Return</button>
+                </form>
+              </td>
+            </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    {% else %}
+      <p class="no-books">You haven’t borrowed any books yet.</p>
+    {% endif %}
+  </section>
+
+  <script>
+    // Menu control
+    function toggleMenu() {
+      const menu = document.getElementById('userMenu');
+      menu.style.display = (menu.style.display === 'block') ? 'none' : 'block';
+    }
+    window.onclick = function(e) {
+      const menu = document.getElementById('userMenu');
+      if (!e.target.matches('.menu-btn')) {
+        if (menu && menu.style.display === 'block') menu.style.display = 'none';
+      }
+    };
+  </script>
+</body>
+</html>

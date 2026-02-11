@@ -1,0 +1,10 @@
+Status:	
+	machine: minikube
+	pid: 14674
+	route: 10.96.0.0/12 -> 192.168.49.2
+	minikube: Running
+	services: [flask-app-service]
+    errors: 
+		minikube: no errors
+		router: no errors
+		loadbalancer emulator: no errors

@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Edit Book</title>
+  <link rel="stylesheet" type="text/css" href="/static/css/admin_page.css" />
+  <style>
+    .form-container { max-width: 520px; margin: 40px auto; background: #fff; padding: 24px; border-radius: 8px; box-shadow: 0 4px 16px rgba(0,0,0,0.08); }
+    .form-container h2 { margin: 0 0 12px; }
+    .form-field { display: flex; flex-direction: column; margin: 12px 0; }
+    .form-field label { margin-bottom: 6px; font-weight: 600; }
+    .form-field input,
+    .form-field select { padding: 10px 12px; border: 1px solid #ddd; border-radius: 6px; font-size: 14px; }
+    .actions { display: flex; gap: 12px; margin-top: 16px; }
+    .btn { padding: 10px 14px; border-radius: 6px; text-decoration: none; border: none; cursor: pointer; }
+    .btn.primary { background: #1f7aec; color: #fff; }
+    .btn.secondary { background: #f3f4f6; color: #111827; }
+
+  </style>
+</head>
+<body>
+
+  <div class="form-container">
+    <h2>Edit Book</h2>
+    <form method="POST" action="{{ url_for('edit_book', book_id=book.book_id) }}">
+      <div class="form-field">
+        <label for="title">Title *</label>
+        <input id="title" name="title" type="text" value="{{ title or book.title }}" placeholder="Enter book title" required />
+      </div>
+      <div class="form-field">
+        <label for="author">Author *</label>
+        <input id="author" name="author" type="text" value="{{ author or book.author }}" placeholder="Enter author name" required />
+      </div>
+      <div class="form-field">
+        <label for="category">Category</label>
+        <select id="category" name="category">
+          <option value="" {% if (category or book.category) in [None, ''] %}selected{% endif %}>Uncategorized</option>
+          {% for cat in categories %}
+            <option value="{{ cat }}" {% if (category or book.category) == cat %}selected{% endif %}>{{ cat }}</option>
+          {% endfor %}
+        </select>
+      </div>
+      <div class="form-field">
+        <label for="isbn">ISBN</label>
+        <input id="isbn" name="isbn" type="text" value="{{ book.isbn }}" readonly />
+        <small style="color:#6b7280; margin-top:4px;">ISBNs are generated automatically and cannot be changed.</small>
+      </div>
+      <div class="actions">
+        <button type="submit" class="btn primary">Save Changes</button>
+        <a href="{{ url_for('admin_dashboard') }}" class="btn secondary">Cancel</a>
+      </div>
+    </form>
+  </div>
+
+</body>
+</html>
+
+

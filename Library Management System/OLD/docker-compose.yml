@@ -1,0 +1,47 @@
+﻿version: '3.9'
+services:
+  db:
+    build:
+      context: ./SC_DbApp/sqlserver-docker
+      dockerfile: Dockerfile
+    container_name: mssql_db
+    environment:
+      SA_PASSWORD: "YourStrongPassword!"
+      ACCEPT_EULA: "Y"
+      MSSQL_PID: "Express"  # Express edition - lighter and faster startup
+      MSSQL_AGENT_ENABLED: "false"  # Disable SQL Agent - saves startup time
+      MSSQL_COLLATION: "SQL_Latin1_General_CP1_CI_AS"
+      MSSQL_LCID: "1033"  # US English - faster initialization
+      MSSQL_MEMORY_LIMIT_MB: "2048"  # Limit memory for faster allocation
+      MSSQL_TCP_PORT: "1433"
+    ports:
+      - "1433:1433"
+    volumes:
+      - mssql_data:/var/opt/mssql
+    # SQL Server will automatically execute .sql files from /var/opt/mssql/init/
+    # on first startup, creating the database immediately when ready
+    restart: unless-stopped
+    # Optional: Resource limits for faster startup (adjust based on your system)
+    # deploy:
+    #   resources:
+    #     limits:
+    #       memory: 2G
+    #     reservations:
+    #       memory: 1G
+
+  web:
+    build: ./SC_DbApp
+    container_name: flask_web
+    ports:
+      - "8080:5000"
+    environment:
+      DB_HOST: db
+      SQL_USER: SA
+      SQL_PASSWORD: "YourStrongPassword!"
+      SQL_DB: ShelfCheckDB
+    depends_on:
+      - db
+    restart: unless-stopped
+
+volumes:
+  mssql_data:

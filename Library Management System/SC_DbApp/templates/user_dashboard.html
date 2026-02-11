@@ -1,0 +1,350 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>User Dashboard - Shelf Check</title>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" />
+  <style>
+    body {
+      background: #f5f7fb;
+      font-family: 'Inter', sans-serif;
+      color: #1f2937;
+      margin: 0;
+      padding: 0;
+    }
+
+    /* === Header === */
+    .topbar {
+      background: #0b2149;
+      color: white;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 18px 40px;
+      font-weight: 700;
+      font-size: 20px;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+    }
+
+    .menu-container {
+      position: relative;
+    }
+    .menu-btn {
+      background: none;
+      border: none;
+      color: white;
+      font-size: 28px;
+      cursor: pointer;
+      line-height: 1;
+    }
+    .dropdown-menu {
+      display: none;
+      position: absolute;
+      top: 42px;
+      right: 0;
+      background: white;
+      border-radius: 10px;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.12);
+      overflow: hidden;
+      min-width: 160px;
+      font-family: 'Inter', sans-serif;
+    }
+    .dropdown-menu a {
+      display: block;
+      padding: 12px 18px;
+      text-decoration: none;
+      color: #111827;
+      font-weight: 500;
+      font-size: 15px;
+      transition: background 0.2s ease;
+    }
+    .dropdown-menu a:hover {
+      background: #f3f4f6;
+    }
+
+    /* === Search Section === */
+    .actions {
+      background: white;
+      max-width: 850px;
+      margin: 35px auto 10px;
+      border-radius: 12px;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.05);
+      padding: 18px 20px;
+      display: flex;
+      align-items: center;
+    }
+
+.search-box {
+  flex: 1;
+  display: flex;
+  justify-content: center;
+}
+
+.search-box input {
+  width: 90%;                /* automatic width that adapts to viewport */
+  max-width: 600px;          /* prevents it from being too large on wide screens */
+  min-width: 250px;          /* prevents it from being too small on phones */
+  padding: 12px 16px 12px 40px;
+  font-size: 15px;
+  border: 1px solid #d1d5db;
+  border-radius: 8px;
+  outline: none;
+  background: #f9fafb url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" fill="%2394a3b8" viewBox="0 0 24 24"><path d="M10 2a8 8 0 015.29 13.71l4 4a1 1 0 01-1.42 1.42l-4-4A8 8 0 1110 2zm0 2a6 6 0 100 12 6 6 0 000-12z"/></svg>') no-repeat 12px center;
+  background-size: 18px;
+  transition: all 0.2s ease;
+  box-sizing: border-box;
+}
+
+.search-box input:focus {
+  border-color: #0b2149;
+  background-color: white;
+  box-shadow: 0 0 0 2px rgba(11,33,73,0.15);
+}
+
+    /* === Categories & Books === */
+    .categories {
+      max-width: 850px;
+      margin: 30px auto 60px;
+      display: flex;
+      flex-direction: column;
+      gap: 24px;
+    }
+
+    .category-card {
+      background: white;
+      border-radius: 16px;
+      box-shadow: 0 3px 10px rgba(0,0,0,0.08);
+      padding: 20px 25px;
+      transition: box-shadow 0.2s ease;
+    }
+
+    .category-card:hover {
+      box-shadow: 0 6px 18px rgba(0,0,0,0.12);
+    }
+
+    .category-card h3 {
+      font-size: 18px;
+      color: #0b2149;
+      font-weight: 700;
+      margin-bottom: 15px;
+    }
+
+    .book-item {
+      background: #f9fafb;
+      border-radius: 10px;
+      padding: 14px 18px;
+      margin-bottom: 10px;
+      box-shadow: inset 0 0 0 1px #e5e7eb;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+    }
+
+    .book-details {
+      flex: 1;
+      min-width: 250px;
+    }
+
+    .book-details strong {
+      display: block;
+      font-size: 16px;
+      color: #111827;
+    }
+
+    .book-details em {
+      color: #374151;
+      font-style: italic;
+    }
+
+    .copy-count {
+      color: #0b2149;
+      font-weight: 600;
+      display: block;
+      margin-top: 5px;
+      font-size: 14px;
+    }
+
+    .borrow-btn {
+      background: linear-gradient(90deg, #10b981, #059669);
+      color: white;
+      border: none;
+      padding: 9px 16px;
+      border-radius: 8px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+
+    .borrow-btn:hover {
+      background: linear-gradient(90deg, #059669, #047857);
+      transform: translateY(-1px);
+    }
+
+    .unavailable {
+      background: #e5e7eb;
+      color: #6b7280;
+      padding: 9px 16px;
+      border-radius: 8px;
+      font-weight: 600;
+    }
+
+    /* === Modal === */
+    .modal {
+      display: none;
+      position: fixed;
+      z-index: 10;
+      left: 0; top: 0;
+      width: 100%; height: 100%;
+      background: rgba(0,0,0,0.5);
+      justify-content: center;
+      align-items: center;
+    }
+
+    .modal-content {
+      background: white;
+      padding: 20px;
+      border-radius: 10px;
+      width: 90%;
+      max-width: 400px;
+      text-align: center;
+    }
+
+    .confirm-btn {
+      background: #0b2149;
+      color: white;
+      border: none;
+      padding: 10px 16px;
+      border-radius: 6px;
+      font-weight: 600;
+      cursor: pointer;
+      margin: 8px;
+    }
+
+    .cancel-btn {
+      background: #f3f4f6;
+      color: #111827;
+      border: none;
+      padding: 10px 16px;
+      border-radius: 6px;
+      font-weight: 600;
+      cursor: pointer;
+      margin: 8px;
+    }
+
+    @media (max-width: 900px) {
+      .category-card { width: 95%; }
+      .book-item { flex-direction: column; align-items: flex-start; }
+    }
+  </style>
+</head>
+
+<body>
+  <!-- Header -->
+  <header class="topbar">
+    <span>📚 Welcome, {{ username }}!</span>
+    <div class="menu-container">
+      <button class="menu-btn" onclick="toggleMenu()">⋯</button>
+      <div class="dropdown-menu" id="userMenu">
+        <a href="{{ url_for('my_books') }}">My Books</a>
+        <a href="{{ url_for('logout') }}">Logout</a>
+      </div>
+    </div>
+  </header>
+
+  <!-- Search -->
+  <section class="actions">
+    <div class="search-box">
+      <input type="text" id="bookSearch" placeholder="🔍 Search for books by title or author..." />
+    </div>
+  </section>
+
+  <!-- Books -->
+  <section class="categories" id="bookList">
+    {% if category_to_books %}
+      {% for category, books_in_cat in category_to_books.items() %}
+        <div class="category-card">
+          <h3>{{ category }}</h3>
+          {% for b in books_in_cat %}
+            <div class="book-item">
+              <div class="book-details">
+                <strong>{{ b.title }}</strong>
+                <em>{{ b.author }}</em>
+                {% if b.isbn %}<span>(ISBN: {{ b.isbn }})</span>{% endif %}
+                <span class="copy-count">Available copies: {{ b.available_copies }}</span>
+              </div>
+              {% if b.available_copies > 0 %}
+                <button class="borrow-btn" onclick="openModal('{{ b.book_id }}', '{{ b.title }}')">Borrow</button>
+              {% else %}
+                <span class="unavailable">Unavailable</span>
+              {% endif %}
+            </div>
+          {% endfor %}
+        </div>
+      {% endfor %}
+    {% else %}
+      <p style="text-align:center;">No books found.</p>
+    {% endif %}
+  </section>
+
+  <!-- Borrow Modal -->
+  <div class="modal" id="borrowModal">
+    <div class="modal-content">
+      <h3 id="bookTitle"></h3>
+      <form method="POST" id="borrowForm">
+        <input type="hidden" name="book_id" id="modalBookId" />
+        <label for="due_date">Select Due Date (Max 14 days):</label><br>
+        <input type="date" name="due_date" id="dueDateInput" required /><br>
+        <div style="margin-top: 10px;">
+          <button type="submit" class="confirm-btn">Confirm Borrow</button>
+          <button type="button" class="cancel-btn" onclick="closeModal()">Cancel</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <script>
+    function toggleMenu() {
+      const menu = document.getElementById('userMenu');
+      menu.style.display = (menu.style.display === 'block') ? 'none' : 'block';
+    }
+
+    window.onclick = function (e) {
+      const menu = document.getElementById('userMenu');
+      const modal = document.getElementById('borrowModal');
+      if (!e.target.matches('.menu-btn')) {
+        if (menu && menu.style.display === 'block') menu.style.display = 'none';
+      }
+      if (e.target === modal) closeModal();
+    };
+
+    const modal = document.getElementById('borrowModal');
+    const dueInput = document.getElementById('dueDateInput');
+
+    function openModal(bookId, title) {
+      document.getElementById('bookTitle').textContent = 'Borrow: ' + title;
+      document.getElementById('modalBookId').value = bookId;
+      modal.style.display = 'flex';
+      const today = new Date();
+      const max = new Date();
+      max.setDate(today.getDate() + 14);
+      dueInput.min = today.toISOString().split('T')[0];
+      dueInput.max = max.toISOString().split('T')[0];
+      dueInput.value = today.toISOString().split('T')[0];
+    }
+
+    function closeModal() {
+      modal.style.display = 'none';
+    }
+
+    document.getElementById('bookSearch').addEventListener('input', function () {
+      const term = this.value.toLowerCase();
+      document.querySelectorAll('.book-item').forEach(item => {
+        const text = item.innerText.toLowerCase();
+        item.style.display = text.includes(term) ? 'flex' : 'none';
+      });
+    });
+  </script>
+</body>
+</html>

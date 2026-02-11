@@ -1,0 +1,55 @@
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: mssql-data-pvc
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 1Gi
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: mssql-db
+spec:
+  selector:
+    matchLabels:
+      app: mssql-db
+  template:
+    metadata:
+      labels:
+        app: mssql-db
+    spec:
+      containers:
+      - name: mssql
+        image: mcr.microsoft.com/mssql/server:2022-latest
+        env:
+        - name: ACCEPT_EULA
+          value: "Y"
+        - name: SA_PASSWORD
+          value: "YourStrong!Passw0rd"
+        - name: MSSQL_PID
+          value: "Express"
+        ports:
+        - containerPort: 1433
+        volumeMounts:
+        - name: mssql-storage
+          mountPath: /var/opt/mssql
+      volumes:
+      - name: mssql-storage
+        persistentVolumeClaim:
+          claimName: mssql-data-pvc
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: mssql-service
+spec:
+  selector:
+    app: mssql-db
+  ports:
+  - port: 1433
+    targetPort: 1433
+  type: ClusterIP
